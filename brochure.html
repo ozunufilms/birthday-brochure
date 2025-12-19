@@ -16,59 +16,8 @@ body, html {margin:0;padding:0;width:100%;height:100%;background:#000;overflow:h
 
 <div class="book" id="book">
   <!-- 53 pages -->
-  <div class="page"><img src="brochure_images/page_1.jpg"></div>
-  <div class="page"><img src="brochure_images/page_2.jpg"></div>
-  <div class="page"><img src="brochure_images/page_3.jpg"></div>
-  <div class="page"><img src="brochure_images/page_4.jpg"></div>
-  <div class="page"><img src="brochure_images/page_5.jpg"></div>
-  <div class="page"><img src="brochure_images/page_6.jpg"></div>
-  <div class="page"><img src="brochure_images/page_7.jpg"></div>
-  <div class="page"><img src="brochure_images/page_8.jpg"></div>
-  <div class="page"><img src="brochure_images/page_9.jpg"></div>
-  <div class="page"><img src="brochure_images/page_10.jpg"></div>
-  <div class="page"><img src="brochure_images/page_11.jpg"></div>
-  <div class="page"><img src="brochure_images/page_12.jpg"></div>
-  <div class="page"><img src="brochure_images/page_13.jpg"></div>
-  <div class="page"><img src="brochure_images/page_14.jpg"></div>
-  <div class="page"><img src="brochure_images/page_15.jpg"></div>
-  <div class="page"><img src="brochure_images/page_16.jpg"></div>
-  <div class="page"><img src="brochure_images/page_17.jpg"></div>
-  <div class="page"><img src="brochure_images/page_18.jpg"></div>
-  <div class="page"><img src="brochure_images/page_19.jpg"></div>
-  <div class="page"><img src="brochure_images/page_20.jpg"></div>
-  <div class="page"><img src="brochure_images/page_21.jpg"></div>
-  <div class="page"><img src="brochure_images/page_22.jpg"></div>
-  <div class="page"><img src="brochure_images/page_23.jpg"></div>
-  <div class="page"><img src="brochure_images/page_24.jpg"></div>
-  <div class="page"><img src="brochure_images/page_25.jpg"></div>
-  <div class="page"><img src="brochure_images/page_26.jpg"></div>
-  <div class="page"><img src="brochure_images/page_27.jpg"></div>
-  <div class="page"><img src="brochure_images/page_28.jpg"></div>
-  <div class="page"><img src="brochure_images/page_29.jpg"></div>
-  <div class="page"><img src="brochure_images/page_30.jpg"></div>
-  <div class="page"><img src="brochure_images/page_31.jpg"></div>
-  <div class="page"><img src="brochure_images/page_32.jpg"></div>
-  <div class="page"><img src="brochure_images/page_33.jpg"></div>
-  <div class="page"><img src="brochure_images/page_34.jpg"></div>
-  <div class="page"><img src="brochure_images/page_35.jpg"></div>
-  <div class="page"><img src="brochure_images/page_36.jpg"></div>
-  <div class="page"><img src="brochure_images/page_37.jpg"></div>
-  <div class="page"><img src="brochure_images/page_38.jpg"></div>
-  <div class="page"><img src="brochure_images/page_39.jpg"></div>
-  <div class="page"><img src="brochure_images/page_40.jpg"></div>
-  <div class="page"><img src="brochure_images/page_41.jpg"></div>
-  <div class="page"><img src="brochure_images/page_42.jpg"></div>
-  <div class="page"><img src="brochure_images/page_43.jpg"></div>
-  <div class="page"><img src="brochure_images/page_44.jpg"></div>
-  <div class="page"><img src="brochure_images/page_45.jpg"></div>
-  <div class="page"><img src="brochure_images/page_46.jpg"></div>
-  <div class="page"><img src="brochure_images/page_47.jpg"></div>
-  <div class="page"><img src="brochure_images/page_48.jpg"></div>
-  <div class="page"><img src="brochure_images/page_49.jpg"></div>
-  <div class="page"><img src="brochure_images/page_50.jpg"></div>
-  <div class="page"><img src="brochure_images/page_51.jpg"></div>
-  <div class="page"><img src="brochure_images/page_52.jpg"></div>
-  <div class="page"><img src="brochure_images/page_53.jpg"></div>
+  <!-- Repeat for pages 1-53 -->
+  ${Array.from({length:53},(_,i)=>`<div class="page"><img src="brochure_images/page_${i+1}.jpg"></div>`).join('')}
 </div>
 
 <div class="page-counter" id="pageCounter">Page 1 / 53</div>
@@ -78,6 +27,7 @@ const pagesEl = document.querySelectorAll('.page');
 const pageCounter = document.getElementById('pageCounter');
 let current = 0;
 
+// ZOOM & PAN variables
 let imgScale = 1, lastScale = 1, posX = 0, posY = 0, startX = 0, startY = 0;
 let touchCount = 0;
 let lastTap = 0;
@@ -101,6 +51,7 @@ function prevPage(){ if(current>0) showPage(current-1); }
 
 const book = document.getElementById('book');
 
+// TOUCH START
 book.addEventListener('touchstart', e=>{
   touchCount = e.touches.length;
   if(touchCount===1){
@@ -116,6 +67,7 @@ book.addEventListener('touchstart', e=>{
   }
 });
 
+// TOUCH MOVE
 book.addEventListener('touchmove', e=>{
   e.preventDefault();
   if(touchCount===1){
@@ -131,9 +83,9 @@ book.addEventListener('touchmove', e=>{
   } else if(touchCount===2){
     const [t1,t2] = e.touches;
     const dist = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
-    let scale = pointers.startScale * (dist/pointers.startDist);
-    // LIMIT ZOOM: min 1, max 3 (Google style)
-    scale = Math.min(Math.max(1, scale), 3);
+    let scale = pointers.startScale * (dist / pointers.startDist);
+    // LIMIT ZOOM: min 1, max 4 for user control
+    scale = Math.min(Math.max(1, scale), 4);
     imgScale = scale;
 
     const rect = img().getBoundingClientRect();
@@ -141,24 +93,24 @@ book.addEventListener('touchmove', e=>{
     const dy = pointers.centerY - rect.top - rect.height/2;
     const tx = posX + dx*(scale/lastScale-1);
     const ty = posY + dy*(scale/lastScale-1);
-
     img().style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
   }
 });
 
+// TOUCH END
 book.addEventListener('touchend', e=>{
   lastScale = imgScale;
   if(imgScale===1){ posX=0; posY=0; img().style.transform='translate(0px,0px) scale(1)'; }
 
+  // DOUBLE TAP
   const now = Date.now();
   if(now - lastTap < 300){
-    // DOUBLE TAP: toggle zoom between 1x and 2x
     if(imgScale===1){
-      imgScale=2;
-      img().style.transform=`translate(0px,0px) scale(2)`;
+      imgScale = 2;
+      img().style.transform = `translate(0px,0px) scale(2)`;
     } else {
-      imgScale=1; posX=0; posY=0;
-      img().style.transform=`translate(0px,0px) scale(1)`;
+      imgScale = 1; posX=0; posY=0;
+      img().style.transform = `translate(0px,0px) scale(1)`;
     }
   }
   lastTap = now;
