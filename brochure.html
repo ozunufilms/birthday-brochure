@@ -5,12 +5,59 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Birthday Brochure Swipe Flipbook Zoomable</title>
 <style>
-body { margin:0; font-family:system-ui,sans-serif; background:#111; overflow:hidden; }
-.book { position:relative; width:100vw; height:100vh; display:flex; align-items:center; justify-content:center; overflow:hidden; }
-.page { position:absolute; width:100%; height:100%; background:#000; display:flex; align-items:center; justify-content:center; transition: transform 0.5s ease; }
-.page img { width:100%; height:100%; object-fit:contain; background:black; transform-origin:center center; transition: transform 0.2s ease; touch-action: none; }
-.page-counter { position:absolute; bottom:16px; width:100%; text-align:center; color:white; font-size:1rem; opacity:0.9; pointer-events:none; }
-.hint { position:absolute; bottom:50px; width:100%; text-align:center; color:white; font-size:0.9rem; opacity:0.7; pointer-events:none; }
+body {
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:#111;
+  overflow:hidden;
+}
+.book {
+  position:relative;
+  width:100vw;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.page {
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition: transform 0.5s ease;
+}
+.page img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:black;
+  transform-origin:center center;
+  transition: transform 0.2s ease;
+}
+.page-counter {
+  position:absolute;
+  bottom:16px;
+  width:100%;
+  text-align:center;
+  color:white;
+  font-size:1rem;
+  opacity:0.9;
+  pointer-events:none;
+}
+.hint {
+  position:absolute;
+  bottom:50px;
+  width:100%;
+  text-align:center;
+  color:white;
+  font-size:0.9rem;
+  opacity:0.7;
+  pointer-events:none;
+}
 </style>
 </head>
 <body>
@@ -80,82 +127,98 @@ const pages = document.querySelectorAll('.page');
 const pageCounter = document.getElementById('pageCounter');
 let current = 0;
 
-// Initialize positions
-pages.forEach((page, i) => {
-  page.style.transform = `translateX(${i===0?0:100}%)`;
+// Initialize page positions
+pages.forEach((p, i) => {
+  p.style.transform = `translateX(${i === 0 ? 0 : 100}%)`;
 });
 
-// Page counter update
-function updateCounter() { pageCounter.textContent = `Page ${current+1} / ${pages.length}`; }
+// Update page counter
+function updateCounter() {
+  pageCounter.textContent = `Page ${current + 1} / ${pages.length}`;
+}
 
-// Show page
+// Show page and reset zoom
 function showPage(index) {
-  pages.forEach((p,i)=>{
-    p.style.transform = i<index?'translateX(-100%)':i===index?'translateX(0%)':'translateX(100%)';
-    p.querySelector('img').style.transform='scale(1)'; // reset zoom
+  pages.forEach((p, i) => {
+    p.style.transform = i < index ? 'translateX(-100%)' : i === index ? 'translateX(0%)' : 'translateX(100%)';
+    // Reset zoom
+    p.querySelector('img').style.transform = 'scale(1)';
   });
-  current=index;
+  current = index;
   updateCounter();
 }
 
-// Swipe detection only if zoom==1
-let startX=0,isDragging=false;
-const book=document.getElementById('book');
-book.addEventListener('touchstart', e=>{ startX=e.touches[0].clientX; isDragging=true; });
-book.addEventListener('touchend', e=>{
-  if(!isDragging) return;
-  const endX=e.changedTouches[0].clientX;
-  const diff=endX-startX;
-  const zoom = parseFloat(pages[current].querySelector('img').style.transform.replace('scale(','').replace(')','')) || 1;
-  if(zoom<=1){
-    if(diff<-50) nextPage();
-    else if(diff>50) prevPage();
-  }
-  isDragging=false;
+// Swipe detection only when zoom scale is 1
+let startX = 0;
+let isDragging = false;
+
+const book = document.getElementById('book');
+
+book.addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
+  isDragging = true;
 });
 
-// Next/prev page functions
-function nextPage(){ if(current<pages.length-1) showPage(current+1); else window.location.href='closing.html'; }
-function prevPage(){ if(current>0) showPage(current-1); }
+book.addEventListener('touchend', e => {
+  if (!isDragging) return;
+  const imgScale = parseFloat(pages[current].querySelector('img').style.transform.replace('scale(','').replace(')','')) || 1;
+  if(imgScale !== 1){ isDragging=false; return; } // prevent swipe if zoomed
+  const endX = e.changedTouches[0].clientX;
+  const diff = endX - startX;
+  if (diff < -50) nextPage();
+  else if (diff > 50) prevPage();
+  isDragging = false;
+});
 
-// Zoom handling with controlled sensitivity
-let scale=1;
-const imgEl = () => pages[current].querySelector('img');
+// Swipe functions
+function nextPage() {
+  if (current < pages.length -1) showPage(current+1);
+  else window.location.href = 'closing.html';
+}
+function prevPage() { if (current >0) showPage(current-1); }
 
-// Mouse wheel zoom (desktop)
-book.addEventListener('wheel', e=>{
+// Zoom handling
+let scale = 1;
+
+// Mouse wheel zoom for desktop
+book.addEventListener('wheel', e => {
   e.preventDefault();
-  scale += e.deltaY*-0.002; // smaller multiplier for slower zoom
-  scale = Math.min(Math.max(1,scale),3);
-  imgEl().style.transform=`scale(${scale})`;
+  scale += e.deltaY * -0.001;
+  scale = Math.min(Math.max(1, scale), 3); // min 1, max 3
+  pages[current].querySelector('img').style.transform = `scale(${scale})`;
 });
 
-// Touch pinch zoom (mobile)
-let pointers=[];
-book.addEventListener('pointerdown', e=>{ pointers.push(e); });
-book.addEventListener('pointerup', e=>{ pointers=pointers.filter(p=>p.pointerId!==e.pointerId); if(pointers.length<2){ scale=Math.max(1,scale); }});
-book.addEventListener('pointermove', e=>{
+// Touch pinch zoom using pointer events
+let pointers = [];
+
+book.addEventListener('pointerdown', e => { pointers.push(e); });
+book.addEventListener('pointerup', e => { pointers = pointers.filter(p => p.pointerId !== e.pointerId); });
+book.addEventListener('pointermove', e => {
   if(pointers.length===2){
-    const [p1,p2]=pointers;
-    const currDist=Math.hypot(p1.clientX-p2.clientX,p1.clientY-p2.clientY);
-    const prevDist=Math.hypot((p1.prevX||p1.clientX)-(p2.prevX||p2.clientX),(p1.prevY||p1.clientY)-(p2.prevY||p2.clientY));
-    scale *= currDist/prevDist;
-    scale = Math.min(Math.max(1,scale),3);
-    imgEl().style.transform=`scale(${scale})`;
+    const [p1,p2] = pointers;
+    const dx = p2.clientX - p1.clientX;
+    const dy = p2.clientY - p1.clientY;
+    const dist = Math.hypot(dx, dy);
+
+    if(!p1.startDist) { p1.startDist = dist; p2.startDist=dist; }
+    scale = (dist / p1.startDist);
+    scale = Math.min(Math.max(1, scale), 3);
+    pages[current].querySelector('img').style.transform = `scale(${scale})`;
   }
-  pointers=pointers.map(p=>p.pointerId===e.pointerId?{...p,clientX:e.clientX,clientY:e.clientY}:p);
+  pointers = pointers.map(p => p.pointerId === e.pointerId ? {...p, clientX:e.clientX, clientY:e.clientY} : p);
 });
 
 // Double tap to reset
-let lastTap=0;
-book.addEventListener('touchend', e=>{
-  const now=new Date().getTime();
-  if(now-lastTap<300){ scale=1; imgEl().style.transform='scale(1)'; }
-  lastTap=now;
+let lastTap = 0;
+book.addEventListener('touchend', e => {
+  const now = new Date().getTime();
+  if(now - lastTap < 300){ pages[current].querySelector('img').style.transform='scale(1)'; scale=1; }
+  lastTap = now;
 });
 
 // Initialize
 showPage(0);
 </script>
+
 </body>
 </html>
