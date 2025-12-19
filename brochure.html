@@ -3,19 +3,56 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Brochure</title>
+<title>Birthday Brochure Swipe Flipbook</title>
 <style>
-body { margin:0; font-family:system-ui,sans-serif; background:#111; overflow:hidden; }
-.book { position:relative; width:100vw; height:100vh; perspective:2000px; }
-.page { position:absolute; width:100%; height:100%; transform-origin:left; transition:transform 0.8s ease; backface-visibility:hidden; }
-.page img { width:100%; height:100%; object-fit:contain; background:black; }
-.page.flipped { transform: rotateY(-180deg); }
-.hint { position:absolute; bottom:16px; width:100%; text-align:center; color:white; font-size:0.9rem; opacity:0.7; pointer-events:none; }
+body {
+  margin:0;
+  font-family:system-ui,sans-serif;
+  background:#111;
+  overflow:hidden;
+}
+.book {
+  position:relative;
+  width:100vw;
+  height:100vh;
+  touch-action: pan-y; /* allow vertical scrolling outside book if needed */
+  overflow: hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.page {
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition: transform 0.5s ease;
+}
+.page img {
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  background:black;
+}
+.hint {
+  position:absolute;
+  bottom:16px;
+  width:100%;
+  text-align:center;
+  color:white;
+  font-size:0.9rem;
+  opacity:0.7;
+  pointer-events:none;
+}
 </style>
 </head>
 <body>
 
 <div class="book" id="book">
+  <!-- 53 pages -->
   <div class="page"><img src="brochure_images/page_1.jpg"></div>
   <div class="page"><img src="brochure_images/page_2.jpg"></div>
   <div class="page"><img src="brochure_images/page_3.jpg"></div>
@@ -71,23 +108,67 @@ body { margin:0; font-family:system-ui,sans-serif; background:#111; overflow:hid
   <div class="page"><img src="brochure_images/page_53.jpg"></div>
 </div>
 
-<div class="hint">Tap to flip</div>
+<div class="hint">Swipe left/right to flip</div>
 
 <script>
 const pages = document.querySelectorAll('.page');
 let current = 0;
-pages.forEach((page, index) => {
-  page.style.zIndex = pages.length - index;
-  page.addEventListener('click', () => {
-    if (index === current) {
-      page.classList.add('flipped');
-      current++;
-      if (current === pages.length) {
-        setTimeout(() => { window.location.href='closing.html'; }, 900);
-      }
-    }
-  });
+
+// Initialize positions
+pages.forEach((page, i) => {
+  page.style.transform = `translateX(${i === 0 ? 0 : 100}%)`;
 });
+
+// Swipe detection
+let startX = 0;
+let isDragging = false;
+
+const book = document.getElementById('book');
+
+book.addEventListener('touchstart', (e) => {
+  startX = e.touches[0].clientX;
+  isDragging = true;
+});
+
+book.addEventListener('touchmove', (e) => {
+  if (!isDragging) return;
+});
+
+book.addEventListener('touchend', (e) => {
+  if (!isDragging) return;
+  const endX = e.changedTouches[0].clientX;
+  const diff = endX - startX;
+  if (diff < -50) nextPage();
+  else if (diff > 50) prevPage();
+  isDragging = false;
+});
+
+function showPage(index) {
+  pages.forEach((p, i) => {
+    if (i < index) p.style.transform = 'translateX(-100%)';
+    else if (i === index) p.style.transform = 'translateX(0%)';
+    else p.style.transform = 'translateX(100%)';
+  });
+}
+
+function nextPage() {
+  if (current < pages.length - 1) {
+    current++;
+    showPage(current);
+  } else {
+    window.location.href = 'closing.html';
+  }
+}
+
+function prevPage() {
+  if (current > 0) {
+    current--;
+    showPage(current);
+  }
+}
+
+// Initialize first page
+showPage(current);
 </script>
 
 </body>
