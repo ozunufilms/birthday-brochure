@@ -15,11 +15,10 @@ body {
   position:relative;
   width:100vw;
   height:100vh;
-  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
-  touch-action: pan-y pinch-zoom; /* allow pinch zoom */
+  overflow:hidden;
 }
 .page {
   position:absolute;
@@ -30,19 +29,28 @@ body {
   align-items:center;
   justify-content:center;
   transition: transform 0.5s ease;
-  touch-action: none; /* disable default touch actions per page */
 }
 .page img {
   width:100%;
   height:100%;
   object-fit:contain;
   background:black;
-  transform-origin: center center;
+  transform-origin:center center;
   transition: transform 0.2s ease;
+}
+.page-counter {
+  position:absolute;
+  bottom:16px;
+  width:100%;
+  text-align:center;
+  color:white;
+  font-size:1rem;
+  opacity:0.9;
+  pointer-events:none;
 }
 .hint {
   position:absolute;
-  bottom:16px;
+  bottom:50px;
   width:100%;
   text-align:center;
   color:white;
@@ -112,9 +120,11 @@ body {
 </div>
 
 <div class="hint">Swipe left/right or pinch to zoom</div>
+<div class="page-counter" id="pageCounter">Page 1 / 53</div>
 
 <script>
 const pages = document.querySelectorAll('.page');
+const pageCounter = document.getElementById('pageCounter');
 let current = 0;
 
 // Initialize positions
@@ -122,18 +132,29 @@ pages.forEach((page, i) => {
   page.style.transform = `translateX(${i === 0 ? 0 : 100}%)`;
 });
 
-// Swipe detection
+// Update page counter
+function updateCounter() {
+  pageCounter.textContent = `Page ${current+1} / ${pages.length}`;
+}
+
+// Show page and reset zoom
+function showPage(index) {
+  pages.forEach((p, i) => {
+    p.style.transform = i < index ? 'translateX(-100%)' : i === index ? 'translateX(0%)' : 'translateX(100%)';
+    p.querySelector('img').style.transform = 'scale(1)';
+  });
+  current = index;
+  updateCounter();
+}
+
+// Swipe handling
 let startX = 0;
 let isDragging = false;
 
 const book = document.getElementById('book');
 
-book.addEventListener('touchstart', (e) => {
-  startX = e.touches[0].clientX;
-  isDragging = true;
-});
-
-book.addEventListener('touchend', (e) => {
+book.addEventListener('touchstart', e => { startX = e.touches[0].clientX; isDragging = true; });
+book.addEventListener('touchend', e => {
   if (!isDragging) return;
   const endX = e.changedTouches[0].clientX;
   const diff = endX - startX;
@@ -142,45 +163,52 @@ book.addEventListener('touchend', (e) => {
   isDragging = false;
 });
 
-function showPage(index) {
-  pages.forEach((p, i) => {
-    if (i < index) p.style.transform = 'translateX(-100%)';
-    else if (i === index) p.style.transform = 'translateX(0%)';
-    else p.style.transform = 'translateX(100%)';
-  });
-}
-
 function nextPage() {
-  if (current < pages.length - 1) {
-    current++;
-    showPage(current);
-  } else {
-    window.location.href = 'closing.html';
-  }
+  if (current < pages.length -1) showPage(current+1);
+  else window.location.href = 'closing.html';
 }
+function prevPage() { if (current>0) showPage(current-1); }
 
-function prevPage() {
-  if (current > 0) {
-    current--;
-    showPage(current);
-  }
-}
-
-// Pinch to zoom for mobile
+// Zoom handling for both mobile and desktop
 let scale = 1;
 let lastScale = 1;
 
-book.addEventListener('gesturestart', (e) => { e.preventDefault(); });
-book.addEventListener('gesturechange', (e) => {
+const img = () => pages[current].querySelector('img');
+
+// Mouse wheel zoom
+book.addEventListener('wheel', e => {
   e.preventDefault();
-  scale = lastScale * e.scale;
-  pages[current].querySelector('img').style.transform = `scale(${scale})`;
-});
-book.addEventListener('gestureend', (e) => {
-  lastScale = scale;
+  scale += e.deltaY * -0.001;
+  scale = Math.min(Math.max(1, scale), 3);
+  img().style.transform = `scale(${scale})`;
 });
 
-showPage(current);
+// Touch pinch zoom using pointer events
+let pointers = [];
+book.addEventListener('pointerdown', e => { pointers.push(e); });
+book.addEventListener('pointerup', e => { pointers = pointers.filter(p => p.pointerId!==e.pointerId); scale=1; img().style.transform='scale(1)'; });
+book.addEventListener('pointermove', e => {
+  if (pointers.length===2){
+    const [p1, p2] = pointers;
+    const currDist = Math.hypot(p1.clientX - p2.clientX, p1.clientY - p2.clientY);
+    const prevDist = Math.hypot(p1.prevX - p2.prevX, p1.prevY - p2.prevY);
+    scale *= currDist/prevDist;
+    scale = Math.min(Math.max(1, scale),3);
+    img().style.transform=`scale(${scale})`;
+  }
+  pointers = pointers.map(p=>p.pointerId===e.pointerId? {...p, clientX:e.clientX, clientY:e.clientY} : p);
+});
+
+// Double tap to reset
+let lastTap = 0;
+book.addEventListener('touchend', e => {
+  const now = new Date().getTime();
+  if (now - lastTap < 300) { img().style.transform='scale(1)'; scale=1; }
+  lastTap = now;
+});
+
+// Initialize
+showPage(0);
 </script>
 
 </body>
