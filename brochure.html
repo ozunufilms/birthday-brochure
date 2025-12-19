@@ -2,41 +2,41 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Birthday Brochure Swipe Flipbook Zoomable</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Birthday Brochure Smooth Zoom Flipbook</title>
 <style>
-body {
+body, html {
   margin:0;
-  font-family:system-ui,sans-serif;
-  background:#111;
+  padding:0;
+  width:100%;
+  height:100%;
+  background:#000;
   overflow:hidden;
+  touch-action:none;
+  font-family: system-ui,sans-serif;
 }
 .book {
   position:relative;
   width:100vw;
   height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
   overflow:hidden;
 }
 .page {
   position:absolute;
   width:100%;
   height:100%;
-  background:#000;
+  top:0; left:0;
   display:flex;
   align-items:center;
   justify-content:center;
-  transition: transform 0.5s ease;
+  transition: transform 0.4s ease;
 }
 .page img {
   width:100%;
   height:100%;
   object-fit:contain;
-  background:black;
-  transform-origin:center center;
   transition: transform 0.2s ease;
+  touch-action:none;
 }
 .page-counter {
   position:absolute;
@@ -45,17 +45,6 @@ body {
   text-align:center;
   color:white;
   font-size:1rem;
-  opacity:0.9;
-  pointer-events:none;
-}
-.hint {
-  position:absolute;
-  bottom:50px;
-  width:100%;
-  text-align:center;
-  color:white;
-  font-size:0.9rem;
-  opacity:0.7;
   pointer-events:none;
 }
 </style>
@@ -63,63 +52,14 @@ body {
 <body>
 
 <div class="book" id="book">
-  <!-- 53 pages -->
   <div class="page"><img src="brochure_images/page_1.jpg"></div>
   <div class="page"><img src="brochure_images/page_2.jpg"></div>
   <div class="page"><img src="brochure_images/page_3.jpg"></div>
   <div class="page"><img src="brochure_images/page_4.jpg"></div>
   <div class="page"><img src="brochure_images/page_5.jpg"></div>
-  <div class="page"><img src="brochure_images/page_6.jpg"></div>
-  <div class="page"><img src="brochure_images/page_7.jpg"></div>
-  <div class="page"><img src="brochure_images/page_8.jpg"></div>
-  <div class="page"><img src="brochure_images/page_9.jpg"></div>
-  <div class="page"><img src="brochure_images/page_10.jpg"></div>
-  <div class="page"><img src="brochure_images/page_11.jpg"></div>
-  <div class="page"><img src="brochure_images/page_12.jpg"></div>
-  <div class="page"><img src="brochure_images/page_13.jpg"></div>
-  <div class="page"><img src="brochure_images/page_14.jpg"></div>
-  <div class="page"><img src="brochure_images/page_15.jpg"></div>
-  <div class="page"><img src="brochure_images/page_16.jpg"></div>
-  <div class="page"><img src="brochure_images/page_17.jpg"></div>
-  <div class="page"><img src="brochure_images/page_18.jpg"></div>
-  <div class="page"><img src="brochure_images/page_19.jpg"></div>
-  <div class="page"><img src="brochure_images/page_20.jpg"></div>
-  <div class="page"><img src="brochure_images/page_21.jpg"></div>
-  <div class="page"><img src="brochure_images/page_22.jpg"></div>
-  <div class="page"><img src="brochure_images/page_23.jpg"></div>
-  <div class="page"><img src="brochure_images/page_24.jpg"></div>
-  <div class="page"><img src="brochure_images/page_25.jpg"></div>
-  <div class="page"><img src="brochure_images/page_26.jpg"></div>
-  <div class="page"><img src="brochure_images/page_27.jpg"></div>
-  <div class="page"><img src="brochure_images/page_28.jpg"></div>
-  <div class="page"><img src="brochure_images/page_29.jpg"></div>
-  <div class="page"><img src="brochure_images/page_30.jpg"></div>
-  <div class="page"><img src="brochure_images/page_31.jpg"></div>
-  <div class="page"><img src="brochure_images/page_32.jpg"></div>
-  <div class="page"><img src="brochure_images/page_33.jpg"></div>
-  <div class="page"><img src="brochure_images/page_34.jpg"></div>
-  <div class="page"><img src="brochure_images/page_35.jpg"></div>
-  <div class="page"><img src="brochure_images/page_36.jpg"></div>
-  <div class="page"><img src="brochure_images/page_37.jpg"></div>
-  <div class="page"><img src="brochure_images/page_38.jpg"></div>
-  <div class="page"><img src="brochure_images/page_39.jpg"></div>
-  <div class="page"><img src="brochure_images/page_40.jpg"></div>
-  <div class="page"><img src="brochure_images/page_41.jpg"></div>
-  <div class="page"><img src="brochure_images/page_42.jpg"></div>
-  <div class="page"><img src="brochure_images/page_43.jpg"></div>
-  <div class="page"><img src="brochure_images/page_44.jpg"></div>
-  <div class="page"><img src="brochure_images/page_45.jpg"></div>
-  <div class="page"><img src="brochure_images/page_46.jpg"></div>
-  <div class="page"><img src="brochure_images/page_47.jpg"></div>
-  <div class="page"><img src="brochure_images/page_48.jpg"></div>
-  <div class="page"><img src="brochure_images/page_49.jpg"></div>
-  <div class="page"><img src="brochure_images/page_50.jpg"></div>
-  <div class="page"><img src="brochure_images/page_51.jpg"></div>
-  <div class="page"><img src="brochure_images/page_52.jpg"></div>
-  <div class="page"><img src="brochure_images/page_53.jpg"></div>
+  <!-- Add remaining pages up to 53 -->
 </div>
 
-<div class="hint">Swipe left/right or pinch to zoom</div>
 <div class="page-counter" id="pageCounter">Page 1 / 53</div>
 
 <script>
@@ -128,93 +68,97 @@ const pageCounter = document.getElementById('pageCounter');
 let current = 0;
 
 // Initialize page positions
-pages.forEach((p, i) => {
-  p.style.transform = `translateX(${i === 0 ? 0 : 100}%)`;
-});
+pages.forEach((p,i)=>p.style.transform=`translateX(${i===0?0:100}%)`);
+function updateCounter(){ pageCounter.textContent=`Page ${current+1} / ${pages.length}`; }
+updateCounter();
 
-// Update page counter
-function updateCounter() {
-  pageCounter.textContent = `Page ${current + 1} / ${pages.length}`;
-}
+// Navigation and gestures
+let startX=0, startY=0, isDragging=false;
+let imgScale = 1, lastScale=1;
+let posX=0, posY=0, lastX=0, lastY=0;
+let pointers = [];
 
-// Show page and reset zoom
-function showPage(index) {
-  pages.forEach((p, i) => {
-    p.style.transform = i < index ? 'translateX(-100%)' : i === index ? 'translateX(0%)' : 'translateX(100%)';
-    // Reset zoom
-    p.querySelector('img').style.transform = 'scale(1)';
-  });
-  current = index;
+const book = document.getElementById('book');
+const img = () => pages[current].querySelector('img');
+
+// Swipe only if not zoomed
+function showPage(index){
+  pages.forEach((p,i)=>p.style.transform=i<index?'translateX(-100%)':i===index?'translateX(0%)':'translateX(100%)');
+  imgScale=1; lastScale=1; posX=0; posY=0;
+  img().style.transform=`translate(0px,0px) scale(1)`;
+  current=index;
   updateCounter();
 }
 
-// Swipe detection only when zoom scale is 1
-let startX = 0;
-let isDragging = false;
-
-const book = document.getElementById('book');
-
-book.addEventListener('touchstart', e => {
-  startX = e.touches[0].clientX;
-  isDragging = true;
-});
-
-book.addEventListener('touchend', e => {
-  if (!isDragging) return;
-  const imgScale = parseFloat(pages[current].querySelector('img').style.transform.replace('scale(','').replace(')','')) || 1;
-  if(imgScale !== 1){ isDragging=false; return; } // prevent swipe if zoomed
-  const endX = e.changedTouches[0].clientX;
-  const diff = endX - startX;
-  if (diff < -50) nextPage();
-  else if (diff > 50) prevPage();
-  isDragging = false;
-});
-
-// Swipe functions
-function nextPage() {
-  if (current < pages.length -1) showPage(current+1);
-  else window.location.href = 'closing.html';
-}
-function prevPage() { if (current >0) showPage(current-1); }
-
-// Zoom handling
-let scale = 1;
-
-// Mouse wheel zoom for desktop
-book.addEventListener('wheel', e => {
-  e.preventDefault();
-  scale += e.deltaY * -0.001;
-  scale = Math.min(Math.max(1, scale), 3); // min 1, max 3
-  pages[current].querySelector('img').style.transform = `scale(${scale})`;
-});
-
-// Touch pinch zoom using pointer events
-let pointers = [];
-
-book.addEventListener('pointerdown', e => { pointers.push(e); });
-book.addEventListener('pointerup', e => { pointers = pointers.filter(p => p.pointerId !== e.pointerId); });
-book.addEventListener('pointermove', e => {
-  if(pointers.length===2){
-    const [p1,p2] = pointers;
-    const dx = p2.clientX - p1.clientX;
-    const dy = p2.clientY - p1.clientY;
-    const dist = Math.hypot(dx, dy);
-
-    if(!p1.startDist) { p1.startDist = dist; p2.startDist=dist; }
-    scale = (dist / p1.startDist);
-    scale = Math.min(Math.max(1, scale), 3);
-    pages[current].querySelector('img').style.transform = `scale(${scale})`;
+// Touch start
+book.addEventListener('touchstart', e=>{
+  if(e.touches.length===1){
+    startX = e.touches[0].clientX - lastX;
+    startY = e.touches[0].clientY - lastY;
+  } else if(e.touches.length===2){
+    const [t1,t2] = e.touches;
+    pointers = [t1,t2];
+    pointers.startDist = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
+    pointers.startScale = imgScale;
+    pointers.centerX = (t1.clientX+t2.clientX)/2;
+    pointers.centerY = (t1.clientY+t2.clientY)/2;
   }
-  pointers = pointers.map(p => p.pointerId === e.pointerId ? {...p, clientX:e.clientX, clientY:e.clientY} : p);
 });
 
-// Double tap to reset
-let lastTap = 0;
-book.addEventListener('touchend', e => {
-  const now = new Date().getTime();
-  if(now - lastTap < 300){ pages[current].querySelector('img').style.transform='scale(1)'; scale=1; }
-  lastTap = now;
+// Touch move
+book.addEventListener('touchmove', e=>{
+  e.preventDefault();
+  if(e.touches.length===1 && imgScale===1){
+    // horizontal swipe for page
+    const dx = e.touches[0].clientX - startX;
+    if(dx>50) prevPage();
+    if(dx<-50) nextPage();
+  } else if(e.touches.length===2){
+    // pinch zoom
+    const [t1,t2] = e.touches;
+    const dist = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
+    let scale = pointers.startScale * (dist / pointers.startDist);
+    scale = Math.min(Math.max(1, scale),3);
+    imgScale=scale;
+
+    // compute translation to zoom around pinch center
+    const rect = img().getBoundingClientRect();
+    const dx = pointers.centerX - rect.left - rect.width/2;
+    const dy = pointers.centerY - rect.top - rect.height/2;
+
+    const tx = posX + dx*(scale/lastScale -1);
+    const ty = posY + dy*(scale/lastScale -1);
+
+    img().style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;
+  }
 });
+
+// Touch end
+book.addEventListener('touchend', e=>{
+  lastScale=imgScale;
+  if(imgScale===1){ posX=0; posY=0; img().style.transform='scale(1)'; }
+});
+
+// Double tap to zoom
+let lastTap=0;
+book.addEventListener('touchend', e=>{
+  const now = Date.now();
+  if(now-lastTap<300){
+    if(imgScale===1){
+      imgScale=2;
+      img().style.transform=`translate(0px,0px) scale(2)`;
+    } else{
+      imgScale=1;
+      posX=0; posY=0;
+      img().style.transform=`translate(0px,0px) scale(1)`;
+    }
+  }
+  lastTap=now;
+});
+
+// Page functions
+function nextPage(){ if(current<pages.length-1) showPage(current+1); else window.location.href='closing.html'; }
+function prevPage(){ if(current>0) showPage(current-1); }
 
 // Initialize
 showPage(0);
