@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Birthday Brochure Swipe Flipbook</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Birthday Brochure Swipe Flipbook Zoomable</title>
 <style>
 body {
   margin:0;
@@ -15,11 +15,11 @@ body {
   position:relative;
   width:100vw;
   height:100vh;
-  touch-action: pan-y; /* allow vertical scrolling outside book if needed */
-  overflow: hidden;
+  overflow:hidden;
   display:flex;
   align-items:center;
   justify-content:center;
+  touch-action: pan-y pinch-zoom; /* allow pinch zoom */
 }
 .page {
   position:absolute;
@@ -30,12 +30,15 @@ body {
   align-items:center;
   justify-content:center;
   transition: transform 0.5s ease;
+  touch-action: none; /* disable default touch actions per page */
 }
 .page img {
   width:100%;
   height:100%;
   object-fit:contain;
   background:black;
+  transform-origin: center center;
+  transition: transform 0.2s ease;
 }
 .hint {
   position:absolute;
@@ -108,7 +111,7 @@ body {
   <div class="page"><img src="brochure_images/page_53.jpg"></div>
 </div>
 
-<div class="hint">Swipe left/right to flip</div>
+<div class="hint">Swipe left/right or pinch to zoom</div>
 
 <script>
 const pages = document.querySelectorAll('.page');
@@ -128,10 +131,6 @@ const book = document.getElementById('book');
 book.addEventListener('touchstart', (e) => {
   startX = e.touches[0].clientX;
   isDragging = true;
-});
-
-book.addEventListener('touchmove', (e) => {
-  if (!isDragging) return;
 });
 
 book.addEventListener('touchend', (e) => {
@@ -167,7 +166,20 @@ function prevPage() {
   }
 }
 
-// Initialize first page
+// Pinch to zoom for mobile
+let scale = 1;
+let lastScale = 1;
+
+book.addEventListener('gesturestart', (e) => { e.preventDefault(); });
+book.addEventListener('gesturechange', (e) => {
+  e.preventDefault();
+  scale = lastScale * e.scale;
+  pages[current].querySelector('img').style.transform = `scale(${scale})`;
+});
+book.addEventListener('gestureend', (e) => {
+  lastScale = scale;
+});
+
 showPage(current);
 </script>
 
