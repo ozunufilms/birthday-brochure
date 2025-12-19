@@ -3,99 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Birthday Brochure Smooth Zoom Flipbook</title>
+<title>Birthday Brochure Flipbook</title>
 <style>
-body, html {
-  margin:0;
-  padding:0;
-  width:100%;
-  height:100%;
-  background:#000;
-  overflow:hidden;
-  touch-action:none;
-  font-family: system-ui,sans-serif;
-}
-.book {
-  position:relative;
-  width:100vw;
-  height:100vh;
-  overflow:hidden;
-}
-.page {
-  position:absolute;
-  width:100%;
-  height:100%;
-  top:0; left:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition: transform 0.4s ease;
-}
-.page img {
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  transition: transform 0.2s ease;
-  touch-action:none;
-}
-.page-counter {
-  position:absolute;
-  bottom:16px;
-  width:100%;
-  text-align:center;
-  color:white;
-  font-size:1rem;
-  pointer-events:none;
-}
+body, html {margin:0;padding:0;width:100%;height:100%;background:#000;overflow:hidden;font-family:system-ui,sans-serif;}
+.book {position:relative;width:100vw;height:100vh;overflow:hidden;}
+.page {position:absolute;width:100%;height:100%;top:0;left:0;display:flex;align-items:center;justify-content:center;transition: transform 0.4s ease;}
+.page img {width:100%;height:100%;object-fit:contain;transition: transform 0.2s ease;touch-action:none;}
+.page-counter {position:absolute;bottom:16px;width:100%;text-align:center;color:white;font-size:1rem;pointer-events:none;}
 </style>
 </head>
 <body>
 
 <div class="book" id="book">
+  <!-- 53 pages -->
   <div class="page"><img src="brochure_images/page_1.jpg"></div>
   <div class="page"><img src="brochure_images/page_2.jpg"></div>
   <div class="page"><img src="brochure_images/page_3.jpg"></div>
   <div class="page"><img src="brochure_images/page_4.jpg"></div>
   <div class="page"><img src="brochure_images/page_5.jpg"></div>
-  <!-- Add remaining pages up to 53 -->
+  <div class="page"><img src="brochure_images/page_6.jpg"></div>
+  <div class="page"><img src="brochure_images/page_7.jpg"></div>
+  <div class="page"><img src="brochure_images/page_8.jpg"></div>
+  <div class="page"><img src="brochure_images/page_9.jpg"></div>
+  <div class="page"><img src="brochure_images/page_10.jpg"></div>
+  <div class="page"><img src="brochure_images/page_11.jpg"></div>
+  <div class="page"><img src="brochure_images/page_12.jpg"></div>
+  <div class="page"><img src="brochure_images/page_13.jpg"></div>
+  <div class="page"><img src="brochure_images/page_14.jpg"></div>
+  <div class="page"><img src="brochure_images/page_15.jpg"></div>
+  <div class="page"><img src="brochure_images/page_16.jpg"></div>
+  <div class="page"><img src="brochure_images/page_17.jpg"></div>
+  <div class="page"><img src="brochure_images/page_18.jpg"></div>
+  <div class="page"><img src="brochure_images/page_19.jpg"></div>
+  <div class="page"><img src="brochure_images/page_20.jpg"></div>
+  <div class="page"><img src="brochure_images/page_21.jpg"></div>
+  <div class="page"><img src="brochure_images/page_22.jpg"></div>
+  <div class="page"><img src="brochure_images/page_23.jpg"></div>
+  <div class="page"><img src="brochure_images/page_24.jpg"></div>
+  <div class="page"><img src="brochure_images/page_25.jpg"></div>
+  <div class="page"><img src="brochure_images/page_26.jpg"></div>
+  <div class="page"><img src="brochure_images/page_27.jpg"></div>
+  <div class="page"><img src="brochure_images/page_28.jpg"></div>
+  <div class="page"><img src="brochure_images/page_29.jpg"></div>
+  <div class="page"><img src="brochure_images/page_30.jpg"></div>
+  <div class="page"><img src="brochure_images/page_31.jpg"></div>
+  <div class="page"><img src="brochure_images/page_32.jpg"></div>
+  <div class="page"><img src="brochure_images/page_33.jpg"></div>
+  <div class="page"><img src="brochure_images/page_34.jpg"></div>
+  <div class="page"><img src="brochure_images/page_35.jpg"></div>
+  <div class="page"><img src="brochure_images/page_36.jpg"></div>
+  <div class="page"><img src="brochure_images/page_37.jpg"></div>
+  <div class="page"><img src="brochure_images/page_38.jpg"></div>
+  <div class="page"><img src="brochure_images/page_39.jpg"></div>
+  <div class="page"><img src="brochure_images/page_40.jpg"></div>
+  <div class="page"><img src="brochure_images/page_41.jpg"></div>
+  <div class="page"><img src="brochure_images/page_42.jpg"></div>
+  <div class="page"><img src="brochure_images/page_43.jpg"></div>
+  <div class="page"><img src="brochure_images/page_44.jpg"></div>
+  <div class="page"><img src="brochure_images/page_45.jpg"></div>
+  <div class="page"><img src="brochure_images/page_46.jpg"></div>
+  <div class="page"><img src="brochure_images/page_47.jpg"></div>
+  <div class="page"><img src="brochure_images/page_48.jpg"></div>
+  <div class="page"><img src="brochure_images/page_49.jpg"></div>
+  <div class="page"><img src="brochure_images/page_50.jpg"></div>
+  <div class="page"><img src="brochure_images/page_51.jpg"></div>
+  <div class="page"><img src="brochure_images/page_52.jpg"></div>
+  <div class="page"><img src="brochure_images/page_53.jpg"></div>
 </div>
 
 <div class="page-counter" id="pageCounter">Page 1 / 53</div>
 
 <script>
-const pages = document.querySelectorAll('.page');
+const pagesEl = document.querySelectorAll('.page');
 const pageCounter = document.getElementById('pageCounter');
 let current = 0;
 
-// Initialize page positions
-pages.forEach((p,i)=>p.style.transform=`translateX(${i===0?0:100}%)`);
-function updateCounter(){ pageCounter.textContent=`Page ${current+1} / ${pages.length}`; }
-updateCounter();
-
-// Navigation and gestures
-let startX=0, startY=0, isDragging=false;
-let imgScale = 1, lastScale=1;
-let posX=0, posY=0, lastX=0, lastY=0;
+let imgScale = 1, lastScale = 1, posX = 0, posY = 0, startX = 0, startY = 0;
+let touchCount = 0;
+let lastTap = 0;
 let pointers = [];
 
-const book = document.getElementById('book');
-const img = () => pages[current].querySelector('img');
+function updateCounter(){ pageCounter.textContent = `Page ${current+1} / ${pagesEl.length}`; }
+function img(){ return pagesEl[current].querySelector('img'); }
 
-// Swipe only if not zoomed
 function showPage(index){
-  pages.forEach((p,i)=>p.style.transform=i<index?'translateX(-100%)':i===index?'translateX(0%)':'translateX(100%)');
-  imgScale=1; lastScale=1; posX=0; posY=0;
-  img().style.transform=`translate(0px,0px) scale(1)`;
-  current=index;
+  pagesEl.forEach((p,i)=>{
+    p.style.transform = i<index ? 'translateX(-100%)' : i===index ? 'translateX(0%)' : 'translateX(100%)';
+  });
+  imgScale = 1; lastScale = 1; posX = 0; posY = 0;
+  img().style.transform = 'translate(0px,0px) scale(1)';
+  current = index;
   updateCounter();
 }
 
-// Touch start
+function nextPage(){ if(current<pagesEl.length-1) showPage(current+1); else window.location.href='closing.html'; }
+function prevPage(){ if(current>0) showPage(current-1); }
+
+const book = document.getElementById('book');
+
 book.addEventListener('touchstart', e=>{
-  if(e.touches.length===1){
-    startX = e.touches[0].clientX - lastX;
-    startY = e.touches[0].clientY - lastY;
-  } else if(e.touches.length===2){
+  touchCount = e.touches.length;
+  if(touchCount===1){
+    startX = e.touches[0].clientX - posX;
+    startY = e.touches[0].clientY - posY;
+  } else if(touchCount===2){
     const [t1,t2] = e.touches;
     pointers = [t1,t2];
     pointers.startDist = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
@@ -105,64 +116,55 @@ book.addEventListener('touchstart', e=>{
   }
 });
 
-// Touch move
 book.addEventListener('touchmove', e=>{
   e.preventDefault();
-  if(e.touches.length===1 && imgScale===1){
-    // horizontal swipe for page
-    const dx = e.touches[0].clientX - startX;
-    if(dx>50) prevPage();
-    if(dx<-50) nextPage();
-  } else if(e.touches.length===2){
-    // pinch zoom
+  if(touchCount===1){
+    if(imgScale>1){
+      posX = e.touches[0].clientX - startX;
+      posY = e.touches[0].clientY - startY;
+      img().style.transform = `translate(${posX}px,${posY}px) scale(${imgScale})`;
+    } else {
+      const dx = e.touches[0].clientX - startX;
+      if(dx>50) prevPage();
+      if(dx<-50) nextPage();
+    }
+  } else if(touchCount===2){
     const [t1,t2] = e.touches;
     const dist = Math.hypot(t2.clientX-t1.clientX, t2.clientY-t1.clientY);
-    let scale = pointers.startScale * (dist / pointers.startDist);
-    scale = Math.min(Math.max(1, scale),3);
-    imgScale=scale;
+    let scale = pointers.startScale * (dist/pointers.startDist);
+    // LIMIT ZOOM: min 1, max 3 (Google style)
+    scale = Math.min(Math.max(1, scale), 3);
+    imgScale = scale;
 
-    // compute translation to zoom around pinch center
     const rect = img().getBoundingClientRect();
     const dx = pointers.centerX - rect.left - rect.width/2;
     const dy = pointers.centerY - rect.top - rect.height/2;
+    const tx = posX + dx*(scale/lastScale-1);
+    const ty = posY + dy*(scale/lastScale-1);
 
-    const tx = posX + dx*(scale/lastScale -1);
-    const ty = posY + dy*(scale/lastScale -1);
-
-    img().style.transform=`translate(${tx}px,${ty}px) scale(${scale})`;
+    img().style.transform = `translate(${tx}px,${ty}px) scale(${scale})`;
   }
 });
 
-// Touch end
 book.addEventListener('touchend', e=>{
-  lastScale=imgScale;
-  if(imgScale===1){ posX=0; posY=0; img().style.transform='scale(1)'; }
-});
+  lastScale = imgScale;
+  if(imgScale===1){ posX=0; posY=0; img().style.transform='translate(0px,0px) scale(1)'; }
 
-// Double tap to zoom
-let lastTap=0;
-book.addEventListener('touchend', e=>{
   const now = Date.now();
-  if(now-lastTap<300){
+  if(now - lastTap < 300){
+    // DOUBLE TAP: toggle zoom between 1x and 2x
     if(imgScale===1){
       imgScale=2;
       img().style.transform=`translate(0px,0px) scale(2)`;
-    } else{
-      imgScale=1;
-      posX=0; posY=0;
+    } else {
+      imgScale=1; posX=0; posY=0;
       img().style.transform=`translate(0px,0px) scale(1)`;
     }
   }
-  lastTap=now;
+  lastTap = now;
 });
 
-// Page functions
-function nextPage(){ if(current<pages.length-1) showPage(current+1); else window.location.href='closing.html'; }
-function prevPage(){ if(current>0) showPage(current-1); }
-
-// Initialize
 showPage(0);
 </script>
-
 </body>
 </html>
